@@ -23,22 +23,19 @@ int atomic_CAS(int *addr,int expected,int new_value) {
 	return expected;
 
 }
-void * Tsum()
-{
+void * Tsum() {
     for(int i=0;i<100000;i++)
 	    sum++;
     return NULL;
 }
 
-void *Tsum_mutex()
-{
+void *Tsum_mutex() {
 	slock(&mlock);
 	Tsum();
 	unlock(&mlock);
 	return NULL;
 }
-void *Tsum_atomic()
-{
+void *Tsum_atomic() {
 	while(atomic_CAS(&atomic_flag,1,0)==0);
 	Tsum();
 	atomic_CAS(&atomic_flag,0,1);

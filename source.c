@@ -9,32 +9,32 @@ typedef struct Node{
 }Node;
 //mutex_lock implementation
 //
-pthread_mutex_t lock=PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t mlock=PTHREAD_MUTEX_INITIALIZER;
 
-void lock(pthread_mutex_t * lock)
+void slock(pthread_mutex_t * l)
 {
-     int res=pthread_mutex_lock(lock);
+     int res=pthread_mutex_lock(l);
      assert(res==0);
 }
-void unlock(pthread_mutex_t * lock)
+void unlock(pthread_mutex_t * l)
 {
-     int res=pthread_mutex_unlock(lock);
+     int res=pthread_mutex_unlock(l);
      assert(res==0);
 }
 void push_mutex(Node **top_ptr, Node * n) {
-	lock(&lock);
+	slock(&mlock);
 	n->next =*top_ptr;
 	*top_ptr=n;
-	unlock(&unlock);
+	unlock(&mlock);
 }
 Node * pop_mutex(Node **top_ptr)
 {
-	lock(&lock);
+	slock(&mlock);
 	if(*top_ptr==NULL)
 		return NULL;
 	Node *p=*top_ptr;
 	*top_ptr=*top_ptr->next;
-	unlock(&lock);
+	unlock(&mlock);
 	return p;
 }
 //atomic operation implemention
